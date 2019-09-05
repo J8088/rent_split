@@ -1,9 +1,18 @@
 |
+<<<<<<< HEAD
 | 
 |  
+=======
+|
+|
+>>>>>>> b79fcdeabe04da2f62d77602871d35b1e2876281
 |
 V
 .x SERIES
 
+<<<<<<< HEAD
 .1: Everything works, program runs etc. Dont know how many bu s, but inputting any decimal completely destroys the total. It also leads
+=======
+.1: Everything works, program runs etc. Dont know how many bugs, but inputting any decimal completely destroys the total. It also leads
+>>>>>>> b79fcdeabe04da2f62d77602871d35b1e2876281
 to having the completely incorrect number being shown in the DB. Have to input doubles properly.
