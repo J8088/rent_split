@@ -5,7 +5,7 @@
 #include "add_dialog.h"
 #include "item_widget.h"
 #include "global_variables.h"
-
+//this is a comment
 
 #include <QtWidgets>
 
