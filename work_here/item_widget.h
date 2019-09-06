@@ -7,6 +7,7 @@
 
 #include "newitemtab.h"
 #include "tablemodel.h"
+#include "table_model_individual.h"
 
 #include <QItemSelection>
 #include <QTableWidget>
@@ -41,7 +42,8 @@ signals:
 private:
     void setupTabs();
     QMap <int,double> totalMap;
-    tablemodel *table;
+    tablemodel *billTable;
+    table_model_individual *peopleTable;
     newitemtab *newItemTab;
     QSortFilterProxyModel *proxyModel;
 };

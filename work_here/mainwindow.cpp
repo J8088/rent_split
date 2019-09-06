@@ -10,7 +10,7 @@ MainWindow::MainWindow()
     itemWidget = new item_widget;
     setCentralWidget(itemWidget);
     createMenus();
-    setWindowTitle(tr("Bill Splitter"));
+    setWindowTitle(tr("Rent Split"));
 
 }
 

@@ -100,6 +100,7 @@ bool tablemodel::insertRows(int position, int rows, const QModelIndex &index)
     return true;
 
 }
+
 bool tablemodel::removeRows(int position, int rows, const QModelIndex &index)
 {
     Q_UNUSED(index);

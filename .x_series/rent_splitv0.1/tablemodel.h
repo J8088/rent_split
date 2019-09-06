@@ -37,7 +37,7 @@ inline QDataStream &operator<<(QDataStream &stream, const Item &item)
                   << item.total << item.dateAdded << item.dateDue;
 }
 
-inline QDataStream &operator>>(QDataStream &stream, Item &item)\
+inline QDataStream &operator>>(QDataStream &stream, Item &item)
 {
     return stream >> item.billId >> item.rent >> item.electricity
                   >> item.water >> item.gas >> item.internet

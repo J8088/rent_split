@@ -5,14 +5,15 @@
 #include "add_dialog.h"
 #include "item_widget.h"
 #include "global_variables.h"
-//this is a comment
+
 
 #include <QtWidgets>
 
 item_widget::item_widget(QWidget *parent)
     : QTabWidget (parent)
 {
-    table= new tablemodel(this);
+    billTable= new tablemodel(this);
+    peopleTable=new table_model_individual(this);
     newItemTab = new newitemtab(this);
 
     connect(newItemTab, &newitemtab::sendDetails, this, &item_widget::addEntry);
@@ -28,9 +29,6 @@ void item_widget::showAddEntryDialog()
     //REMEBER:TYPE FIRST, COLOR SECOND, ALWAYS
     add_dialog dialog;
     if(dialog.exec()){
-        //Shit with this validator only accepts positive integers.
-               QRegExpValidator* positiveOnly = new QRegExpValidator(QRegExp("\\d*"), this);
-
                int billId = dialog.billIdText->text().toInt();
 
 
@@ -67,50 +65,50 @@ void item_widget::addEntry(int billId,double rent, double electricity,double wat
 
           QDate date;
 
-          table->insertRows(0, 1, QModelIndex());
+          billTable->insertRows(0, 1, QModelIndex());
 
-          QModelIndex index = table->index(0, 0, QModelIndex());
+          QModelIndex index = billTable->index(0, 0, QModelIndex());
           ++globalItemId;
           billId=globalItemId;
-          table->setData(index,billId, Qt::EditRole);
+          billTable->setData(index,billId, Qt::EditRole);
 
 
 
-          index = table->index(0, 1, QModelIndex());
-          table->setData(index,rent, Qt::EditRole);
+          index = billTable->index(0, 1, QModelIndex());
+          billTable->setData(index,rent, Qt::EditRole);
 
-          index = table->index(0, 2, QModelIndex());
-          table->setData(index,electricity, Qt::EditRole);
+          index = billTable->index(0, 2, QModelIndex());
+          billTable->setData(index,electricity, Qt::EditRole);
 
-          index = table->index(0, 3, QModelIndex());
-          table->setData(index, water, Qt::EditRole);
+          index = billTable->index(0, 3, QModelIndex());
+          billTable->setData(index, water, Qt::EditRole);
 
-          index = table->index(0, 4, QModelIndex());
-          table->setData(index,gas, Qt::EditRole);
+          index = billTable->index(0, 4, QModelIndex());
+          billTable->setData(index,gas, Qt::EditRole);
 
-          index = table->index(0, 5, QModelIndex());
-          table->setData(index,internet, Qt::EditRole);
+          index = billTable->index(0, 5, QModelIndex());
+          billTable->setData(index,internet, Qt::EditRole);
 
-          index = table->index(0, 6, QModelIndex());
+          index = billTable->index(0, 6, QModelIndex());
 
           //check bottom function
           total=rent+electricity+water+gas+internet;
 
-          table->setData(index,total, Qt::EditRole);
+          billTable->setData(index,total, Qt::EditRole);
            totalMap[globalItemId] = total;
 
-           index = table->index(0,8, QModelIndex());
-           table->setData(index,dateDue, Qt::EditRole);
+           index = billTable->index(0,8, QModelIndex());
+           billTable->setData(index,dateDue, Qt::EditRole);
 
 
-            index = table->index(0, 7, QModelIndex());
+            index = billTable->index(0, 7, QModelIndex());
 
           if(dateAdded.length()==0){//If its a new entry...
           //currentdate format: tue, july 30, 2019
           dateAdded = date.currentDate().toString();
-          table->setData(index,dateAdded,Qt::EditRole);
+          billTable->setData(index,dateAdded,Qt::EditRole);
           } else {//If its NOT a new entry..
-             table->setData(index,dateAdded,Qt::EditRole);
+             billTable->setData(index,dateAdded,Qt::EditRole);
           }
 
 
@@ -176,40 +174,40 @@ void item_widget::editEntry()
       row =proxy->mapToSource(index).row();
 
 
-      QModelIndex billIdIndex = table->index(row, 0, QModelIndex());
-      QVariant varBillId = table->data(billIdIndex, Qt::DisplayRole);
+      QModelIndex billIdIndex = billTable->index(row, 0, QModelIndex());
+      QVariant varBillId = billTable->data(billIdIndex, Qt::DisplayRole);
       billId = varBillId.toInt();
 
-      QModelIndex rentIndex = table->index(row, 1, QModelIndex());
-      QVariant varRent = table->data(rentIndex, Qt::DisplayRole);
+      QModelIndex rentIndex = billTable->index(row, 1, QModelIndex());
+      QVariant varRent = billTable->data(rentIndex, Qt::DisplayRole);
       rent = varRent.toDouble();
 
-      QModelIndex electricityIndex = table->index(row, 2, QModelIndex());
-      QVariant varElectricity = table->data(electricityIndex, Qt::DisplayRole);
+      QModelIndex electricityIndex = billTable->index(row, 2, QModelIndex());
+      QVariant varElectricity = billTable->data(electricityIndex, Qt::DisplayRole);
       electricity = varElectricity.toDouble();
 
-      QModelIndex waterIndex = table->index(row, 3, QModelIndex());
-      QVariant varWater = table->data(waterIndex, Qt::DisplayRole);
+      QModelIndex waterIndex = billTable->index(row, 3, QModelIndex());
+      QVariant varWater = billTable->data(waterIndex, Qt::DisplayRole);
       water= varWater.toDouble();
 
-      QModelIndex gasIndex = table->index(row, 4, QModelIndex());
-      QVariant varGas = table->data(gasIndex, Qt::DisplayRole);
+      QModelIndex gasIndex = billTable->index(row, 4, QModelIndex());
+      QVariant varGas = billTable->data(gasIndex, Qt::DisplayRole);
       gas = varGas.toDouble();
 
-      QModelIndex internetIndex = table->index(row, 5, QModelIndex());
-      QVariant varInternet = table->data(internetIndex, Qt::DisplayRole);
+      QModelIndex internetIndex = billTable->index(row, 5, QModelIndex());
+      QVariant varInternet = billTable->data(internetIndex, Qt::DisplayRole);
       internet = varInternet.toDouble();
 
-      QModelIndex totalIndex = table->index(row, 6, QModelIndex());
-      QVariant varTotal = table->data(totalIndex, Qt::DisplayRole);
+      QModelIndex totalIndex = billTable->index(row, 6, QModelIndex());
+      QVariant varTotal = billTable->data(totalIndex, Qt::DisplayRole);
       total = varTotal.toDouble();
 
-      QModelIndex dateAddedIndex = table->index(row, 7, QModelIndex());
-      QVariant varDateAdded = table->data(dateAddedIndex, Qt::DisplayRole);
+      QModelIndex dateAddedIndex = billTable->index(row, 7, QModelIndex());
+      QVariant varDateAdded = billTable->data(dateAddedIndex, Qt::DisplayRole);
       dateAdded = varDateAdded.toString();
 
-      QModelIndex dateDueIndex = table->index(row, 8, QModelIndex());
-      QVariant varDateDue= table->data(dateDueIndex, Qt::DisplayRole);
+      QModelIndex dateDueIndex = billTable->index(row, 8, QModelIndex());
+      QVariant varDateDue= billTable->data(dateDueIndex, Qt::DisplayRole);
       dateDue = varDateDue.toString();
 
    }
@@ -261,30 +259,30 @@ void item_widget::editEntry()
           newGas != gas || newInternet != internet || newTotal != total
                || newDateDue != dateDue){ //if any of these attributes changes...
 
-           QModelIndex index = table->index(row, 1, QModelIndex());
-           table->setData(index,newRent, Qt::EditRole);
+           QModelIndex index = billTable->index(row, 1, QModelIndex());
+           billTable->setData(index,newRent, Qt::EditRole);
 
-           index = table->index(row, 2, QModelIndex());
-           table->setData(index,newElectricity, Qt::EditRole);
+           index = billTable->index(row, 2, QModelIndex());
+           billTable->setData(index,newElectricity, Qt::EditRole);
 
-           index = table->index(row, 3, QModelIndex());
-           table->setData(index, newWater, Qt::EditRole);
+           index = billTable->index(row, 3, QModelIndex());
+           billTable->setData(index, newWater, Qt::EditRole);
 
-           index = table->index(row, 4, QModelIndex());
-           table->setData(index,newGas, Qt::EditRole);
+           index = billTable->index(row, 4, QModelIndex());
+           billTable->setData(index,newGas, Qt::EditRole);
 
-           index = table->index(row, 5, QModelIndex());
-           table->setData(index,newInternet, Qt::EditRole);
+           index = billTable->index(row, 5, QModelIndex());
+           billTable->setData(index,newInternet, Qt::EditRole);
 
-           index = table->index(row, 6, QModelIndex());
+           index = billTable->index(row, 6, QModelIndex());
            newTotal=newRent+newElectricity+newWater+newGas+newInternet+newTotal;
-           table->setData(index,newTotal, Qt::EditRole);
+           billTable->setData(index,newTotal, Qt::EditRole);
 
-//           index = table->index(row, 7, QModelIndex());
-//           table->setData(index,dateAdded, Qt::EditRole);
+//           index = billTable->index(row, 7, QModelIndex());
+//           billTable->setData(index,dateAdded, Qt::EditRole);
 
-           index = table->index(row, 8, QModelIndex());
-           table->setData(index,newDateDue, Qt::EditRole);
+           index = billTable->index(row, 8, QModelIndex());
+           billTable->setData(index,newDateDue, Qt::EditRole);
 
            //allocate the new profit into the map
            totalMap.insert(billId,newTotal);
@@ -304,16 +302,16 @@ void item_widget::removeEntry()
 
     foreach (QModelIndex index, indexes){
         int row=proxy->mapToSource(index).row();
-        table->removeRows(row, 1, QModelIndex());
+        billTable->removeRows(row, 1, QModelIndex());
 
         //get itemid
-        QModelIndex billIdIndex = table->index(row, 0, QModelIndex());
-        QVariant varBillId = table->data(billIdIndex, Qt::DisplayRole);
+        QModelIndex billIdIndex = billTable->index(row, 0, QModelIndex());
+        QVariant varBillId = billTable->data(billIdIndex, Qt::DisplayRole);
         billId = varBillId.toInt();
         ++billId; //tbh i dont know why it gives me one lower but whatever
     }
 
-    if (table->rowCount(QModelIndex())==0){
+    if (billTable->rowCount(QModelIndex())==0){
         insertTab(0,newItemTab, "Items");
     }
    totalMap.remove(billId);
@@ -323,30 +321,65 @@ void item_widget::setupTabs()
 {
     //This tab creates the "Everything" tab
     proxyModel = new QSortFilterProxyModel(this);
-    proxyModel->setSourceModel(table);
+    proxyModel->setSourceModel(billTable);
     proxyModel->setFilterKeyColumn(0);
 
-    QTableView *tableView = new QTableView;
+    QTableView *billTableView = new QTableView;
 
-    tableView->setModel(proxyModel);
-    tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-    tableView->horizontalHeader()->setStretchLastSection(true);
-    tableView->verticalHeader()->hide();
-    tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    tableView->setSelectionMode(QAbstractItemView::SingleSelection);
-    tableView->setSortingEnabled(true);
+    billTableView->setModel(proxyModel);
+    billTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    billTableView->horizontalHeader()->setStretchLastSection(true);
+    billTableView->verticalHeader()->hide();
+    billTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    billTableView->setSelectionMode(QAbstractItemView::SingleSelection);
+    billTableView->setSortingEnabled(true);
 
 
-    connect(tableView->selectionModel(),
+    connect(billTableView->selectionModel(),
             &QItemSelectionModel::selectionChanged, this,
             &item_widget::selectionChanged);
     connect(this, &QTabWidget::currentChanged, this, [this](int tabIndex){
-        auto *tableView = qobject_cast<QTableView*>(widget(tabIndex));
-        if(tableView)
-            emit selectionChanged(tableView->selectionModel()->selection());
+        auto *billTableView = qobject_cast<QTableView*>(widget(tabIndex));
+        if(billTableView)
+            emit selectionChanged(billTableView->selectionModel()->selection());
     });
-    addTab(tableView,"All Bills");
+
+
+    addTab(billTableView,"All Bills");
+
+    /* ***********THE OTHER TAB************* */
+    QStringList roommates;
+    roommates<< "Apurva's Tab" << "Edward's Tab" << "Eric's Tab" << "Jose's Tab";
+
+
+    for(int i=0; i < roommates.size(); ++i) {
+
+    proxyModel = new QSortFilterProxyModel(this);
+    proxyModel->setSourceModel(peopleTable);
+    proxyModel->setFilterKeyColumn(0);
+
+    QTableView *peopleTableView = new QTableView;
+
+    peopleTableView->setModel(proxyModel);
+    peopleTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    peopleTableView->horizontalHeader()->setStretchLastSection(true);
+    peopleTableView->verticalHeader()->hide();
+    peopleTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    peopleTableView->setSelectionMode(QAbstractItemView::SingleSelection);
+    peopleTableView->setSortingEnabled(true);
+
+
+    connect(peopleTableView->selectionModel(),
+            &QItemSelectionModel::selectionChanged, this,
+            &item_widget::selectionChanged);
+    connect(this, &QTabWidget::currentChanged, this, [this](int tabIndex){
+        auto *peopleTableView = qobject_cast<QTableView*>(widget(tabIndex));
+        if(peopleTableView)
+            emit selectionChanged(peopleTableView->selectionModel()->selection());
+    });
+    addTab(peopleTableView,roommates[i]);
     }
+}
 
 
 //when u click "open file" it opens that particular file
@@ -362,16 +395,14 @@ void item_widget::readFromFile(const QString &fileName)
     QList<Item> items;
     QDataStream in(&file);
     in >> items;
+
     if(items.isEmpty()){
         QMessageBox::information(this, tr("There are no items in the file"),
                                  tr("The file you are trying to open has no items in it."));
 
     }else{
-
-        //necessary because otherwise it gives me items in reverse order
-        std::reverse(items.begin(),items.end());
-
-        //"manually" inputs entries from the file so as to avoid many conflicts
+        //CHANGE THIS WHEN YOU ADD MORE SHIT
+        //"for each item, put that shit in the thingy.
         for(const auto &item: qAsConst(items))
             addEntry(item.billId, item.rent, item.electricity, item.water,
                      item.gas,item.internet, item.total,item.dateAdded,item.dateDue);
@@ -383,13 +414,10 @@ void item_widget::writeToFile(const QString &fileName)
 {
     QFile file(fileName);
 
-
     if(!file.open(QIODevice::WriteOnly)){
         QMessageBox::information(this, tr("Unable to open file"), file.errorString());
         return;
     }
-
     QDataStream out(&file);
-
-    out << table->getItems();
+    out << billTable->getItems();
 }
