@@ -31,26 +31,31 @@ add_dialog::add_dialog(QWidget *parent)
 
      rentText->setButtonSymbols(QAbstractSpinBox::NoButtons);
      rentText->setMaximum(9999);
+     rentText->setMinimum(1);
      rentText->setDecimals(2);
     // rentText->setPrefix("$");
 
      electricityText->setButtonSymbols(QAbstractSpinBox::NoButtons);
      electricityText->setMaximum(9999);
+     electricityText->setMinimum(1);
      electricityText->setDecimals(2);
     // electricityText->setPrefix("$");
 
      waterText->setButtonSymbols(QAbstractSpinBox::NoButtons);
      waterText->setMaximum(9999);
+     waterText->setMinimum(1);
      waterText->setDecimals(2);
     // waterText->setPrefix("$");
 
      gasText->setButtonSymbols(QAbstractSpinBox::NoButtons);
      gasText->setMaximum(9999);
+     gasText->setMinimum(1);
      gasText->setDecimals(2);
      //gasText->setPrefix("$");
 
      internetText->setButtonSymbols(QAbstractSpinBox::NoButtons);
      internetText->setMaximum(9999);
+     internetText->setMinimum(1);
      internetText->setDecimals(2);
      //internetText->setPrefix("$");
 

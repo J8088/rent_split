@@ -6,32 +6,35 @@
 
 struct People
 {
-
+   //PP== per person
     int billId;
-    double apurvaOwed;
-    double edwardOwed;
-    double ericOwed;
-    double joseOwed;
-    double totalOwed;
+    double rentTotalPP;
+    double utilitiesTotalPP;
+    double totalOwedPP;
+    int extraRentCents;
+    int extraUtilityCents;
 
     bool operator==(const People &other) const
     {
-        return billId == other.billId && apurvaOwed == other.apurvaOwed &&
-                edwardOwed == other.edwardOwed && ericOwed == other.ericOwed &&
-                joseOwed == other.joseOwed && totalOwed == other.totalOwed;
+        return billId == other.billId && rentTotalPP == other.rentTotalPP &&
+                utilitiesTotalPP == other.utilitiesTotalPP &&
+                totalOwedPP == other.totalOwedPP && extraRentCents == other.extraRentCents
+                && extraUtilityCents == other.extraUtilityCents;
     }
 };
 
 inline QDataStream &operator<<(QDataStream &stream, const People &people)
 {
-    return stream <<people.billId << people.apurvaOwed << people.edwardOwed
-                  << people.ericOwed << people.joseOwed << people.totalOwed;
+    return stream <<people.billId << people.rentTotalPP << people.utilitiesTotalPP
+                  << people.totalOwedPP << people.extraRentCents
+                  << people.extraUtilityCents;
 }
 
 inline QDataStream &operator>>(QDataStream &stream, People &people)
 {
-    return stream >> people.billId >> people.apurvaOwed >> people.edwardOwed
-                  >> people.ericOwed >> people.joseOwed >> people.totalOwed;
+    return stream >> people.billId >> people.rentTotalPP >> people.utilitiesTotalPP
+                  >> people.totalOwedPP >> people.extraRentCents
+                  >> people.extraUtilityCents;
 }
 
 class table_model_individual : public QAbstractTableModel

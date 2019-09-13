@@ -28,6 +28,7 @@ public:
 //    double addTotal(double rent, double electricity,double water, double gas,double internet,
 //                  double total);
 
+
 public slots:
     void showAddEntryDialog();
     //ADD MORE ASS YOU ADD MORE COLUMNS
@@ -41,6 +42,8 @@ signals:
 
 private:
     void setupTabs();
+    void peopleTabAdd(int billId,double rent, double electricity,double water,
+                      double gas,double internet, int row);
     QMap <int,double> totalMap;
     tablemodel *billTable;
     table_model_individual *peopleTable;

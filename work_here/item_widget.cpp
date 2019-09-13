@@ -25,34 +25,23 @@ item_widget::item_widget(QWidget *parent)
 
 void item_widget::showAddEntryDialog()
 {
-    //ADD MORE SHIT WHEN FINISHED
     //REMEBER:TYPE FIRST, COLOR SECOND, ALWAYS
     add_dialog dialog;
     if(dialog.exec()){
-               int billId = dialog.billIdText->text().toInt();
 
 
-               //dialog.rentText->setValidator(positiveOnly);
-               double rent = dialog.rentText->text().toDouble();
-              // dialog.electricityText->setValidator(positiveOnly);
-               double electricity = dialog.electricityText->text().toDouble();
+        int billId = dialog.billIdText->text().toInt();
+        double rent = dialog.rentText->text().toDouble();
+        double electricity = dialog.electricityText->text().toDouble();
+        double water = dialog.waterText->text().toDouble();
+        double gas = dialog.gasText->text().toDouble();
+        double internet = dialog.internetText->text().toDouble();
+        double total = dialog.totalText->text().toDouble();
 
-              // dialog.waterText->setValidator(positiveOnly);
-               double water = dialog.waterText->text().toDouble();
+        QString dateAdded= dialog.dateAddedText->text();
+        QString dateDue = dialog.dateDueText->text();
 
-               //dialog.gasText->setValidator(positiveOnly);
-               double gas = dialog.gasText->text().toDouble();
-
-               //dialog.internetText->setValidator(positiveOnly);
-               double internet = dialog.internetText->text().toDouble();
-
-               double total = dialog.totalText->text().toDouble();
-
-               QString dateAdded= dialog.dateAddedText->text();
-
-               QString dateDue = dialog.dateDueText->text();
-
-               addEntry(billId,rent,electricity,water,gas,internet,total,dateAdded,dateDue);
+        addEntry(billId,rent,electricity,water,gas,internet,total,dateAdded,dateDue);
     }
 }
 
@@ -60,9 +49,6 @@ void item_widget::addEntry(int billId,double rent, double electricity,double wat
                            double total, QString dateAdded, QString dateDue)
 {
     //used to get the current date.
-
-
-
           QDate date;
 
           billTable->insertRows(0, 1, QModelIndex());
@@ -71,7 +57,6 @@ void item_widget::addEntry(int billId,double rent, double electricity,double wat
           ++globalItemId;
           billId=globalItemId;
           billTable->setData(index,billId, Qt::EditRole);
-
 
 
           index = billTable->index(0, 1, QModelIndex());
@@ -89,70 +74,164 @@ void item_widget::addEntry(int billId,double rent, double electricity,double wat
           index = billTable->index(0, 5, QModelIndex());
           billTable->setData(index,internet, Qt::EditRole);
 
+
           index = billTable->index(0, 6, QModelIndex());
 
           //check bottom function
           total=rent+electricity+water+gas+internet;
 
           billTable->setData(index,total, Qt::EditRole);
-           totalMap[globalItemId] = total;
+          totalMap[globalItemId] = total;
 
-           index = billTable->index(0,8, QModelIndex());
-           billTable->setData(index,dateDue, Qt::EditRole);
+          index = billTable->index(0,8, QModelIndex());
+          billTable->setData(index,dateDue, Qt::EditRole);
 
 
-            index = billTable->index(0, 7, QModelIndex());
+          index = billTable->index(0, 7, QModelIndex());
 
           if(dateAdded.length()==0){//If its a new entry...
+
           //currentdate format: tue, july 30, 2019
           dateAdded = date.currentDate().toString();
           billTable->setData(index,dateAdded,Qt::EditRole);
+
           } else {//If its NOT a new entry..
+
              billTable->setData(index,dateAdded,Qt::EditRole);
           }
 
+          //add a new row here rather than in function to improve modularity
+          peopleTable->insertRows(0, 1, QModelIndex());
+          peopleTabAdd(billId,rent,electricity,water,gas,internet,0);
 
-         removeTab(indexOf(newItemTab));
+          removeTab(indexOf(newItemTab));
 }
-//not needed atm, perhaps use it at a later date.
-//double item_widget::addTotal(double rent, double electricity,double water, double gas,double internet,
-//                           double total){
-//       total=0;
-//    int intRent=0;
-//    int intElectricity=0;
-//    int intWater=0;
-//    int intGas=0;
-//    int intInternet=0;
 
-//    rent=rent*100;
-//    rent=trunc(rent);
-//    intRent=(int)rent;
-
-//    electricity=electricity*100;
-//    electricity=trunc(electricity);
-//    intElectricity=(int)electricity;
-
-//    water=water*100;
-//    water=trunc(water);
-//    intWater=(int)water;
-
-//    gas=gas*100;
-//    gas=trunc(gas);
-//    intGas=(int)gas;
-
-//    internet=internet*100;
-//    internet=trunc(internet);
-//    intInternet=(int)internet;
+void item_widget::peopleTabAdd(int billId, double rent, double electricity, double water, double gas,
+                               double internet, int row){
 
 
-//    total=rent+electricity+water+gas+internet;
-//   // total=total/100;
-//    return total;
 
-//}
+    double utilitiesTotal=0;
+    int utilitiesTotalInt=0;
+
+    double rentTruncated=0;
+    int rentInt=0;
+
+    double newTotal=0;
+
+    QModelIndex index = peopleTable->index(row,0, QModelIndex());
+    peopleTable->setData(index,billId,Qt::EditRole);
+
+    //first check to see if both rent and utilities are divisible by 4
+
+    /****RENT*****/
+    rentTruncated=round(rent*100);
+    rentInt= (int)rentTruncated;
+
+
+    rentTruncated=rentTruncated/100;
+    if(rentInt % 4==0){
+
+        rent=rentInt/400.0;
+        index = peopleTable->index(row, 1, QModelIndex());
+        peopleTable->setData(index,rent, Qt::EditRole);
+
+        index = peopleTable->index(row, 4, QModelIndex());
+        peopleTable->setData(index,0,Qt::EditRole);
+
+    } else{
+
+        //add the remainder to the extra utilities
+        int rentChange =rentInt % 4;
+
+        index= peopleTable->index(row,4,QModelIndex());
+        peopleTable->setData(index,(rentChange),Qt::EditRole);
+
+        //remainder subtracted to make rent divisible
+        rentInt=rentInt-rentChange;
+
+        rent=rentInt/400.0;
+        //better than doing *100 and then *4
+
+        index= peopleTable->index(row,1,QModelIndex());
+        peopleTable->setData(index,rent,Qt::EditRole);
+
+    }
+
+        /*******UTILITIES******/
+    //convert all to ints
+    double utilitiesTruncated=0;
+
+    int electricityInt=0;
+    int waterInt=0;
+    int gasInt=0;
+    int internetInt=0;
+
+    utilitiesTruncated=round(electricity*100);
+    electricityInt=(int) utilitiesTruncated;
+
+
+    utilitiesTruncated=round(water*100);
+    waterInt=(int) utilitiesTruncated;
+
+
+    utilitiesTruncated=round(gas*100);
+    gasInt=(int) utilitiesTruncated;
+
+
+    utilitiesTruncated=round(internet*100);
+    internetInt=(int) utilitiesTruncated;
+
+    utilitiesTotalInt=electricityInt+waterInt+gasInt+internetInt;
+
+
+    if(utilitiesTotalInt % 4==0){
+
+        utilitiesTotal=utilitiesTotalInt/400.0;
+
+        index = peopleTable->index(row, 2, QModelIndex());
+        peopleTable->setData(index,utilitiesTotal, Qt::EditRole);
+
+        index=peopleTable->index(row,5,QModelIndex());
+        peopleTable->setData(index,0,Qt::EditRole);
+
+        } else{
+
+        //add the remainder to the extra utilities
+        int utilitiesChange =utilitiesTotalInt % 4;
+
+        index= peopleTable->index(row,5,QModelIndex());
+        peopleTable->setData(index,utilitiesChange,Qt::EditRole);
+
+        //remainder subtracted to make utilities divisible
+        utilitiesTotalInt=utilitiesTotalInt-utilitiesChange;
+        utilitiesTotal=utilitiesTotalInt;
+
+        utilitiesTotal=utilitiesTotal/400;//better than doing *100 and *4
+
+        index = peopleTable->index(row, 2, QModelIndex());
+        peopleTable->setData(index,utilitiesTotal, Qt::EditRole);
+        }
+
+    /*Explanation: using ints to avoid having problems with double.
+     * Furthermore, at this point both rent and utiltotals will
+     * be divisible by 4 since I subtracted their remainder, so
+     * we dont need to fiddle around with them anymore.
+    */
+
+    newTotal=(utilitiesTotalInt+rentInt)/400.0;
+
+    index = peopleTable->index(row, 3, QModelIndex());
+    peopleTable->setData(index,newTotal, Qt::EditRole);
+
+
+
+}
+
 void item_widget::editEntry()
 {
-    QTableView *temp = static_cast<QTableView*>(currentWidget());
+   QTableView *temp = static_cast<QTableView*>(currentWidget());
    QSortFilterProxyModel *proxy = static_cast<QSortFilterProxyModel*>(temp->model());
    QItemSelectionModel *selectionModel = temp->selectionModel();
 
@@ -286,6 +365,8 @@ void item_widget::editEntry()
 
            //allocate the new profit into the map
            totalMap.insert(billId,newTotal);
+           //calculate updated 'per person' tab.
+           peopleTabAdd(billId,newRent,newElectricity,newWater,newGas,newInternet,row);
        }
    }
 }
@@ -303,6 +384,7 @@ void item_widget::removeEntry()
     foreach (QModelIndex index, indexes){
         int row=proxy->mapToSource(index).row();
         billTable->removeRows(row, 1, QModelIndex());
+        peopleTable->removeRows(row,1,QModelIndex());
 
         //get itemid
         QModelIndex billIdIndex = billTable->index(row, 0, QModelIndex());
@@ -348,12 +430,7 @@ void item_widget::setupTabs()
     addTab(billTableView,"All Bills");
 
     /* ***********THE OTHER TAB************* */
-    QStringList roommates;
-    roommates<< "Apurva's Tab" << "Edward's Tab" << "Eric's Tab" << "Jose's Tab";
-
-
-    for(int i=0; i < roommates.size(); ++i) {
-
+    //This tab creates the calculations for division amongst people
     proxyModel = new QSortFilterProxyModel(this);
     proxyModel->setSourceModel(peopleTable);
     proxyModel->setFilterKeyColumn(0);
@@ -369,17 +446,18 @@ void item_widget::setupTabs()
     peopleTableView->setSortingEnabled(true);
 
 
-    connect(peopleTableView->selectionModel(),
+    connect(billTableView->selectionModel(),
             &QItemSelectionModel::selectionChanged, this,
             &item_widget::selectionChanged);
     connect(this, &QTabWidget::currentChanged, this, [this](int tabIndex){
-        auto *peopleTableView = qobject_cast<QTableView*>(widget(tabIndex));
-        if(peopleTableView)
-            emit selectionChanged(peopleTableView->selectionModel()->selection());
+        auto *billTableView = qobject_cast<QTableView*>(widget(tabIndex));
+        if(billTableView)
+            emit selectionChanged(billTableView->selectionModel()->selection());
     });
-    addTab(peopleTableView,roommates[i]);
+    addTab(peopleTableView,"Bill Division");
+
     }
-}
+
 
 
 //when u click "open file" it opens that particular file
@@ -396,12 +474,14 @@ void item_widget::readFromFile(const QString &fileName)
     QDataStream in(&file);
     in >> items;
 
+
     if(items.isEmpty()){
         QMessageBox::information(this, tr("There are no items in the file"),
                                  tr("The file you are trying to open has no items in it."));
 
     }else{
-        //CHANGE THIS WHEN YOU ADD MORE SHIT
+        //necessary because otherwise it gives me items in reverse order
+        std::reverse(items.begin(),items.end());
         //"for each item, put that shit in the thingy.
         for(const auto &item: qAsConst(items))
             addEntry(item.billId, item.rent, item.electricity, item.water,

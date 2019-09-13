@@ -44,11 +44,11 @@ QVariant table_model_individual::data(const QModelIndex &index, int role) const
 
                 switch (index.column()){
                 case 0: return item.billId;
-                case 1: return item.apurvaOwed;
-                case 2: return item.edwardOwed;
-                case 3: return item.ericOwed;
-                case 4: return item.joseOwed;
-                case 5: return item.totalOwed;
+                case 1: return item.rentTotalPP;
+                case 2: return item.utilitiesTotalPP;
+                case 3: return item.totalOwedPP;
+                case 4: return item.extraRentCents;
+                case 5: return item.extraUtilityCents;
                 default: return QVariant();
              }
     }
@@ -65,11 +65,11 @@ QVariant table_model_individual::headerData(int section, Qt::Orientation orienta
         switch (section){
 
               case 0: return tr("Bill #");
-              case 1: return tr("What You Owe Apurva");
-              case 2: return tr("What You Owe Edward");
-              case 3: return tr("What You Owe Eric");
-              case 4: return tr("What You Owe Jose");
-              case 5: return tr("Total Owed");
+              case 1: return tr("Rent Per Person");
+              case 2: return tr("Utilities Per Person");
+              case 3: return tr("Total Per Person");
+              case 4: return tr("Extra Rent Cents");
+              case 5: return tr("Extra Utilities Cents");
               default: return QVariant();
 
         }
@@ -85,7 +85,7 @@ bool table_model_individual::insertRows(int position, int rows, const QModelInde
     beginInsertRows(QModelIndex(), position, (position+rows-1));
 
     for(int row=0;row < totalRows;++row)
-        people.insert(position,{ int(),double(),double(),double(),double(),double()});
+        people.insert(position,{ int(),double(),double(),double(),int(),int()});
 
     endInsertRows();
     return true;
@@ -115,15 +115,15 @@ bool table_model_individual::setData(const QModelIndex &index, const QVariant &v
         switch (index.column()){
         case 0: peoples.billId = value.toInt();
             break;
-        case 1: peoples.apurvaOwed = value.toDouble();
+        case 1: peoples.rentTotalPP = value.toDouble();
             break;
-        case 2: peoples.edwardOwed = value.toDouble();
+        case 2: peoples.utilitiesTotalPP = value.toDouble();
             break;
-        case 3: peoples.ericOwed = value.toDouble();
+        case 3: peoples.totalOwedPP = value.toDouble();
             break;
-        case 4: peoples.joseOwed = value.toDouble();
+        case 4: peoples.extraRentCents = value.toInt();
             break;
-        case 5: peoples.totalOwed = value.toDouble();
+        case 5: peoples.extraUtilityCents = value.toInt();
             break;
         default: return false;
         }
