@@ -25,6 +25,7 @@ void newitemtab::addEntry()
     add_dialog dialog;
     //ADD THIS AS YOU ADD MROE COLUMNS
     if(dialog.exec()){
+
         int billId=dialog.billIdText->text().toInt();
         double rent=dialog.rentText->text().toDouble();
         double electricity=dialog.electricityText->text().toDouble();
@@ -36,6 +37,7 @@ void newitemtab::addEntry()
 
         QString dateAdded = dialog.dateAddedText->text();
         QString dateDue = dialog.dateDueText->text();
+
         emit sendDetails(billId,rent,electricity,water,gas,internet,total,dateAdded,dateDue);
     }
 }

@@ -25,13 +25,9 @@ public:
     item_widget(QWidget *parent = 0);
     void readFromFile(const QString &fileName);
     void writeToFile(const QString &fileName);
-//    double addTotal(double rent, double electricity,double water, double gas,double internet,
-//                  double total);
-
 
 public slots:
     void showAddEntryDialog();
-    //ADD MORE ASS YOU ADD MORE COLUMNS
     void addEntry(int billId,double rent, double electricity,double water, double gas,double internet,
                   double total, QString dateAdded, QString dateDue);
     void editEntry();
@@ -44,7 +40,6 @@ private:
     void setupTabs();
     void peopleTabAdd(int billId,double rent, double electricity,double water,
                       double gas,double internet, int row);
-    QMap <int,double> totalMap;
     tablemodel *billTable;
     table_model_individual *peopleTable;
     newitemtab *newItemTab;

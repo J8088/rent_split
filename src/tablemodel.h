@@ -4,21 +4,17 @@
 #include <QAbstractTableModel>
 #include <QList>
 
-
-// this will be what i actually enter into the list/array
 struct Item
 {
-    //these are for inputting rent tab
     int billId;
     double rent;
     double electricity;
     double water;
     double gas;
     double internet;
-    double total; //REMINDER THAT IF ITS 4.55$, YOU WILL ADD IT AS 455
+    double total;
     QString dateAdded;
     QString dateDue;
-    //these are for calculating what we owe tabs
 
     bool operator==(const Item &other) const
     {
@@ -29,7 +25,6 @@ struct Item
     }
 };
 
-//does some shit
 inline QDataStream &operator<<(QDataStream &stream, const Item &item)
 {
     return stream <<item.billId << item.rent << item.electricity

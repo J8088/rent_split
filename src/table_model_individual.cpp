@@ -26,9 +26,7 @@ int table_model_individual::columnCount(const QModelIndex &parent) const
     Q_UNUSED(parent);
     /*
      * this will always return a set number because we wont be adding
-     * any columns while the program us running (as of now).
-     * THIS WILL CHANGE IN THE FUTURE CHANGE THIS
-     * IN THE FUTURE
+     * any columns while the program us running.
     */
     return 6;
 }
@@ -95,8 +93,10 @@ bool table_model_individual::insertRows(int position, int rows, const QModelInde
 bool table_model_individual::removeRows(int position, int rows, const QModelIndex &index)
 {
     Q_UNUSED(index);
+
     int totalRows=rows;
     beginRemoveRows(QModelIndex(),position, (position+rows-1));
+
     for(int row=0; row < totalRows; ++row)
         people.removeAt(position);
 
@@ -110,7 +110,6 @@ bool table_model_individual::setData(const QModelIndex &index, const QVariant &v
         int row = index.row();
 
         auto peoples = people.value(row);
-        // CHANGE THIS IF YOU PLAN ON ADDING MORE COLUMNS DUMBASS
 
         switch (index.column()){
         case 0: peoples.billId = value.toInt();
@@ -127,14 +126,13 @@ bool table_model_individual::setData(const QModelIndex &index, const QVariant &v
             break;
         default: return false;
         }
+
         people.replace(row,peoples);
         emit dataChanged(index,index,{role});
 
         return true;
-        }
-
-        return false;
-
+    }//end of if
+    return false;
 }
 
 Qt::ItemFlags table_model_individual::flags(const QModelIndex &index) const
