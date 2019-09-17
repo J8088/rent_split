@@ -20,7 +20,6 @@ public:
 
 public slots:
     void addEntry();
-    //ADD MORE SHIT AS YOU ADD MORE LABELS
 signals :
     void sendDetails(int billId,double rent, double electricity,double water, double gas,double internet,
                      double total, QString dateAdded, QString dateDue);

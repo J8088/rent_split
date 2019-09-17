@@ -29,9 +29,7 @@ int tablemodel::columnCount(const QModelIndex &parent) const
     Q_UNUSED(parent);
     /*
      * this will always return a set number because we wont be adding
-     * any columns while the program us running (as of now).
-     * THIS WILL CHANGE IN THE FUTURE CHANGE THIS
-     * IN THE FUTURE
+     * any columns while the program us running.
     */
     return 9;
 }
@@ -60,14 +58,13 @@ QVariant tablemodel::data(const QModelIndex &index, int role) const
     }
     return QVariant(); //safety measure
 }
+
 //names and orientation of header and tabs
 QVariant tablemodel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if(role!=Qt::DisplayRole)
         return QVariant();
     if(orientation == Qt::Horizontal){
-        /* this switch is decided by ^method above
-           typeofitem is 0, colorofitem is 1, etc...*/
         switch (section){
 
               case 0: return tr("Bill #");
@@ -85,7 +82,7 @@ QVariant tablemodel::headerData(int section, Qt::Orientation orientation, int ro
     }
     return QVariant();
 }
-//called b4 new data is added to properly display information when added
+
 bool tablemodel::insertRows(int position, int rows, const QModelIndex &index)
 {
     Q_UNUSED(index);
@@ -104,8 +101,10 @@ bool tablemodel::insertRows(int position, int rows, const QModelIndex &index)
 bool tablemodel::removeRows(int position, int rows, const QModelIndex &index)
 {
     Q_UNUSED(index);
+
     int totalRows=rows;
     beginRemoveRows(QModelIndex(),position, (position+rows-1));
+
     for(int row=0; row < totalRows; ++row)
         items.removeAt(position);
 
@@ -142,14 +141,13 @@ bool tablemodel::setData(const QModelIndex &index, const QVariant &value, int ro
             break;
         default: return false;
         }
+
         items.replace(row,item);
         emit dataChanged(index,index,{role});
 
         return true;
-        }
-
-        return false;
-
+    }//end of if
+    return false;
 }
 
 Qt::ItemFlags tablemodel::flags(const QModelIndex &index) const
