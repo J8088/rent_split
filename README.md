@@ -1,4 +1,4 @@
-#Bill Split
+# Bill Split
 An application I personally use to divide all bills related to apartment ownership between my 3 other roommates
 
 ### Technologies Used
