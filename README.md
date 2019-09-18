@@ -11,7 +11,7 @@ In order to get started, you can either download the src folder and compile the 
 You can also go to build->compiled files, and the EXE will be right there, thought this is a bigger file to download and you wont be able
 to have either a desktop shortcut or a start menu shortcut with this option. Once the program is up and running, you will find a screen similar to this:
 
-![] (image_src_/landing_page.PNG)
+![](image_src/landing_page.PNG)
 
 Once here, you can either click on the "Tools" button on the top to add a bill, or click "Add" on this landing page- both do the same action.
 
