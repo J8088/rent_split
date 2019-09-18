@@ -380,7 +380,6 @@ void item_widget::editEntry()
 
 void item_widget::removeEntry()
 {
-    int billId=0;
 
     QTableView *temp = static_cast<QTableView*>(currentWidget());
     QSortFilterProxyModel *proxy = static_cast<QSortFilterProxyModel*>(temp->model());
