@@ -32,7 +32,7 @@ This leaves a few useful variables around, such as intNumber for checking equali
 Is there a simpler way to do this? Possibly, however since anything involving cents is stored in a double, I was forced to use floating-point
 numbers. (Which honestly isn't that bad, it helped me practice a lot of things I have forgotten about math).
 
-### Divison Logic
+### Division Logic
 The logic for dividing between 4 people is done as such:
 
 					Is the rent more than 4 cents?
