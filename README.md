@@ -31,6 +31,11 @@ This is an example of what a filled up database could look like:
 This program was based on my old Ebay Selling List program, which is also available on my github,
 which in turn was based on Qt's own [Address Book Example](https://doc.qt.io/qt-5/qtwidgets-itemviews-addressbook-example.html) .
 
+## Tests
+The tests folder holds a small file filled with dummy values that I used for debugging. I have made it available to the general public in case
+anyone would want to check how the program works on their own. To use it, simply load the file as if it where any other saved Bill Split database.
+If any notable bugs arise, please, post a message or send an email to emanueljose11@hotmail.com
+
 ### Technologies Used
 This application was built with Qt 5.12.2 and C++11.
 
