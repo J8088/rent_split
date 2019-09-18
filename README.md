@@ -4,7 +4,7 @@ An application I personally use to divide all bills related to apartment ownersh
 ## Project Information
 This program is a bill splitter, to be used in case someone has roommates that might not be too keen on numbers.
 It is a simple project I worked on for my own benefit- I have roommates that need to pay their dues, thus this
-program was made. 
+program was made. PLEASE NOTE: THIS PROJECT DIVIDES ONLY BETWEEN 4 ROOMMATES, NOT MORE, NOT LESS.
 
 ## Getting Started
 In order to get started, you can either download the src folder and compile the files yourself, or you can go to the build->installer.
